@@ -30,7 +30,7 @@ export default function SplashScreen({ navigation }: any) {
     <View style={styles.container}>
       <Animated.View style={[styles.logoContainer, animatedStyle]}>
         <Image 
-          source={require('../../splash_screen/2658_splash_screen.png')} 
+          source={require('../../anhmau/splash_screen/2677_group_34056.png')} 
           style={styles.image} 
           resizeMode="contain" 
         />
@@ -47,8 +47,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logoContainer: {
-    width: width * 0.5,
-    height: width * 0.5,
+    width: width * 0.6,
+    height: 60,
   },
   image: {
     width: '100%',

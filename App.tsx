@@ -1,8 +1,13 @@
 import React from 'react';
+import { View, StyleSheet, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+
+// --- Custom Navigators ---
+import CustomTabBar from './src/navigation/CustomTabBar';
+import CustomDrawer from './src/navigation/CustomDrawer';
 
 // --- Auth Screens ---
 import SplashScreen from './src/screens/SplashScreen';
@@ -23,21 +28,40 @@ import FilterScreen from './src/screens/FilterScreen';
 // --- Profile & Others ---
 import MyProfileScreen from './src/screens/MyProfileScreen';
 import NotificationScreen from './src/screens/NotificationScreen';
+import OrganizerProfileScreen from './src/screens/OrganizerProfileScreen';
+import InviteFriendScreen from './src/screens/InviteFriendScreen';
 
 const AuthStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
+const RootStack = createNativeStackNavigator();
+
+const EmptyComponent = () => null;
 
 const HomeTabs = () => (
-  <Tab.Navigator screenOptions={{ headerShown: false }}>
-    <Tab.Screen name="Home" component={HomeScreen} />
+  <Tab.Navigator
+    tabBar={(props) => <CustomTabBar {...props} />}
+    screenOptions={{ headerShown: false }}
+  >
+    <Tab.Screen name="Explore" component={HomeScreen} />
+    <Tab.Screen name="Events" component={SeeAllEventsScreen} />
+    <Tab.Screen name="CenterButton" component={EmptyComponent} />
     <Tab.Screen name="Map" component={MapViewScreen} />
     <Tab.Screen name="Profile" component={MyProfileScreen} />
   </Tab.Navigator>
 );
 
 const DrawerNavigator = () => (
-  <Drawer.Navigator screenOptions={{ headerShown: false }}>
+  <Drawer.Navigator
+    drawerContent={(props) => <CustomDrawer {...props} />}
+    screenOptions={{
+      headerShown: false,
+      drawerStyle: {
+        width: 270,
+        backgroundColor: '#FFFFFF',
+      },
+    }}
+  >
     <Drawer.Screen name="HomeTabs" component={HomeTabs} />
     <Drawer.Screen name="Search" component={SearchScreen} />
     <Drawer.Screen name="Notification" component={NotificationScreen} />
@@ -55,19 +79,39 @@ const AuthNavigator = () => (
   </AuthStack.Navigator>
 );
 
-const RootStack = createNativeStackNavigator();
-
 export default function App() {
   return (
-    <NavigationContainer>
-      <RootStack.Navigator screenOptions={{ headerShown: false }}>
-        {/* State logic to switch Auth/Main would go here */}
-        <RootStack.Screen name="Auth" component={AuthNavigator} />
-        <RootStack.Screen name="Main" component={DrawerNavigator} />
-        <RootStack.Screen name="EventDetails" component={EventDetailsScreen} />
-        <RootStack.Screen name="SeeAllEvents" component={SeeAllEventsScreen} />
-        <RootStack.Screen name="Filter" component={FilterScreen} />
-      </RootStack.Navigator>
-    </NavigationContainer>
+    <View style={styles.appContainer}>
+      <NavigationContainer>
+        <RootStack.Navigator screenOptions={{ headerShown: false }}>
+          <RootStack.Screen name="Auth" component={AuthNavigator} />
+          <RootStack.Screen name="Main" component={DrawerNavigator} />
+          <RootStack.Screen name="EventDetails" component={EventDetailsScreen} />
+          <RootStack.Screen name="SeeAllEvents" component={SeeAllEventsScreen} />
+          <RootStack.Screen name="Filter" component={FilterScreen} options={{ presentation: 'modal' }} />
+          <RootStack.Screen name="Notification" component={NotificationScreen} />
+          <RootStack.Screen name="Search" component={SearchScreen} />
+          <RootStack.Screen name="OrganizerProfile" component={OrganizerProfileScreen} />
+          <RootStack.Screen name="InviteFriend" component={InviteFriendScreen} />
+        </RootStack.Navigator>
+      </NavigationContainer>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  appContainer: {
+    flex: 1,
+    backgroundColor: '#FAFAFA',
+    ...(Platform.OS === 'web'
+      ? {
+          maxWidth: 480,
+          width: '100%',
+          alignSelf: 'center',
+          height: '100vh' as any,
+          boxShadow: '0 0 24px rgba(0,0,0,0.1)',
+          overflow: 'hidden' as any,
+        }
+      : {}),
+  },
+});
