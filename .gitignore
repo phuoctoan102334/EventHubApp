@@ -39,3 +39,14 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# design assets & QA screenshots (kept local only)
+/anhmau/
+/anhcheck/
+
+# AI agent files
+/AGENTS.md
+/nhatky.md
+
+# dev server log
+/expo_web.log
