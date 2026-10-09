@@ -47,6 +47,7 @@ yarn-error.*
 # AI agent files
 /AGENTS.md
 /nhatky.md
+/.claude/
 
 # dev server log
 /expo_web.log
